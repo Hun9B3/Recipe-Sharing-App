@@ -1,0 +1,79 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "cli": {
+    "packageManager": "npm",
+    "analytics": "ffd14d61-db47-44bf-988f-d73e3f71b000"
+  },
+  "newProjectRoot": "projects",
+  "projects": {
+    "recipeShareApp": {
+      "projectType": "application",
+      "schematics": {},
+      "root": "projects/recipe-share-app",
+      "sourceRoot": "projects/recipe-share-app/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:application",
+          "options": {
+            "browser": "projects/recipe-share-app/src/main.ts",
+            "tsConfig": "projects/recipe-share-app/tsconfig.app.json",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "projects/recipe-share-app/public"
+              }
+            ],
+            "styles": [
+              "projects/recipe-share-app/src/styles.css"
+            ],
+            "server": "projects/recipe-share-app/src/main.server.ts",
+            "outputMode": "server",
+            "ssr": {
+              "entry": "projects/recipe-share-app/src/server.ts"
+            }
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kB",
+                  "maximumError": "1MB"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "4kB",
+                  "maximumError": "8kB"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular/build:dev-server",
+          "configurations": {
+            "production": {
+              "buildTarget": "recipeShareApp:build:production"
+            },
+            "development": {
+              "buildTarget": "recipeShareApp:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "test": {
+          "builder": "@angular/build:unit-test"
+        }
+      }
+    }
+  }
+}
