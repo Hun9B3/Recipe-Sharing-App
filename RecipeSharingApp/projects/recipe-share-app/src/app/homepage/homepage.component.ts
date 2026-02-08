@@ -3,12 +3,13 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { RecipeService, Recipe } from '../recipe.service';
 import { SidebarComponent } from '../shared/sidebar.component';
+import { AuthService } from '../services/auth.service';
 
 @Component({
-    selector: 'app-homepage',
-    standalone: true,
-    imports: [CommonModule, RouterModule, SidebarComponent],
-    template: `
+  selector: 'app-homepage',
+  standalone: true,
+  imports: [CommonModule, RouterModule, SidebarComponent],
+  template: `
     <div class="flex min-h-screen bg-white">
       <!-- Sidebar -->
       <app-sidebar></app-sidebar>
@@ -17,9 +18,18 @@ import { SidebarComponent } from '../shared/sidebar.component';
       <main class="flex-1 flex flex-col">
         <!-- Header -->
         <header class="flex items-center justify-end gap-3 p-4 border-b border-gray-100">
-          <button class="px-5 py-2.5 text-gray-700 font-medium border border-gray-300 rounded-full hover:bg-gray-50 transition-colors">
-            Đăng nhập
-          </button>
+          @if (authService.isAuthenticated()) {
+            <div class="flex items-center gap-3">
+              <span class="text-gray-700">Xin chào, {{ authService.currentUser()?.firstName }}!</span>
+              <button (click)="authService.logout()" class="px-5 py-2.5 text-gray-700 font-medium border border-gray-300 rounded-full hover:bg-gray-50 transition-colors">
+                Đăng xuất
+              </button>
+            </div>
+          } @else {
+            <button (click)="navigateToLogin()" class="px-5 py-2.5 text-gray-700 font-medium border border-gray-300 rounded-full hover:bg-gray-50 transition-colors">
+              Đăng nhập
+            </button>
+          }
           <button class="flex items-center gap-2 px-5 py-2.5 text-orange-500 font-medium border border-orange-500 rounded-full hover:bg-orange-50 transition-colors">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />
@@ -115,26 +125,31 @@ import { SidebarComponent } from '../shared/sidebar.component';
   `
 })
 export class HomepageComponent implements OnInit {
-    searchQuery = signal('');
-    trendingRecipes: Recipe[] = [];
-    latestRecipes: Recipe[] = [];
+  searchQuery = signal('');
+  trendingRecipes: Recipe[] = [];
+  latestRecipes: Recipe[] = [];
 
-    constructor(
-        private recipeService: RecipeService,
-        private router: Router
-    ) { }
+  constructor(
+    private recipeService: RecipeService,
+    private router: Router,
+    protected authService: AuthService
+  ) { }
 
-    ngOnInit() {
-        this.recipeService.getRecipes().subscribe(recipes => {
-            this.trendingRecipes = recipes.slice(0, 8);
-            this.latestRecipes = recipes.slice(8, 14);
-        });
+  ngOnInit() {
+    this.recipeService.getRecipes().subscribe(recipes => {
+      this.trendingRecipes = recipes.slice(0, 8);
+      this.latestRecipes = recipes.slice(8, 14);
+    });
+  }
+
+  onSearch() {
+    const query = this.searchQuery().trim();
+    if (query) {
+      this.router.navigate(['/search'], { queryParams: { q: query } });
     }
+  }
 
-    onSearch() {
-        const query = this.searchQuery().trim();
-        if (query) {
-            this.router.navigate(['/search'], { queryParams: { q: query } });
-        }
-    }
+  navigateToLogin() {
+    this.router.navigate(['/login']);
+  }
 }

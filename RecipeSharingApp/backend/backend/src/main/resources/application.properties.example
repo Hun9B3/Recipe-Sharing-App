@@ -1,0 +1,33 @@
+# K?t n?i Database
+spring.datasource.url=jdbc:postgresql://localhost:5432/recipe_db
+spring.datasource.username=postgres
+spring.datasource.password=postgres
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+
+# C?u hình Server
+server.port=8080
+# JWT Configuration
+jwt.secret=your-secret-key-change-this-in-production-must-be-at-least-256-bits-long-for-security
+jwt.expiration=86400000
+
+# Google OAuth2
+spring.security.oauth2.client.registration.google.client-id=YOUR_GOOGLE_CLIENT_ID
+spring.security.oauth2.client.registration.google.client-secret=YOUR_GOOGLE_CLIENT_SECRET
+spring.security.oauth2.client.registration.google.scope=profile,email
+
+# Facebook OAuth2
+spring.security.oauth2.client.registration.facebook.client-id=YOUR_FACEBOOK_APP_ID
+spring.security.oauth2.client.registration.facebook.client-secret=YOUR_FACEBOOK_APP_SECRET
+spring.security.oauth2.client.registration.facebook.scope=public_profile,email
+
+# Email Configuration (Gmail example - replace with your credentials)
+spring.mail.host=smtp.gmail.com
+spring.mail.port=587
+spring.mail.username=YOUR_EMAIL@gmail.com
+spring.mail.password=YOUR_APP_PASSWORD
+spring.mail.properties.mail.smtp.auth=true
+spring.mail.properties.mail.smtp.starttls.enable=true
+
+# Application URL for email links
+app.url=http://localhost:4200
