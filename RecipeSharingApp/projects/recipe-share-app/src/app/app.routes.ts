@@ -8,9 +8,13 @@ import { QuerySendNoodsComponent } from './queries/query-send-noods.component';
 import { QueryAlbannaBrothersComponent } from './queries/query-albanna-brothers.component';
 import { QueryNotAlisonComponent } from './queries/query-not-alison.component';
 import { QueryFoodNetworkSoupsComponent } from './queries/query-foodnetwork-soups.component';
+import { LoginComponent } from './login/login.component';
+import { VerifyEmailComponent } from './verify-email/verify-email.component';
 
 export const routes: Routes = [
     { path: '', component: HomepageComponent },
+    { path: 'login', component: LoginComponent },
+    { path: 'verify-email', component: VerifyEmailComponent },
     { path: 'search', component: RecipeSearchComponent },
     { path: 'recipe/:id', component: RecipeDetailComponent },
     { path: 'queries', component: RecipeQueriesComponent },

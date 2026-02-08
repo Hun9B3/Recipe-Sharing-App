@@ -18,7 +18,7 @@ public class User {
   @Column(nullable = false, unique = true)
   private String email;
 
-  @Column(name = "password_hash", nullable = false)
+  @Column(name = "password_hash")
   private String passwordHash;
 
   @Column(name = "first_name")
@@ -26,6 +26,24 @@ public class User {
 
   @Column(name = "last_name")
   private String lastName;
+
+  @Column(name = "provider")
+  private String provider; // "local", "google", "facebook"
+
+  @Column(name = "provider_id")
+  private String providerId;
+
+  @Column(name = "profile_picture_url")
+  private String profilePictureUrl;
+
+  @Column(name = "email_verified")
+  private Boolean emailVerified = false;
+
+  @Column(name = "verification_token")
+  private String verificationToken;
+
+  @Column(name = "verification_token_expiry")
+  private LocalDateTime verificationTokenExpiry;
 
   @ManyToOne
   @JoinColumn(name = "role_id")
